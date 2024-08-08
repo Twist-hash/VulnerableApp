@@ -1,0 +1,39 @@
+name: Checkov Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  checkov:
+    name: Run Checkov Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install Checkov
+      run: |
+        python -m pip install --upgrade pip
+        pip install checkov
+
+    - name: Run Checkov
+      run: |
+        checkov -d . --skip-check CKV_AWS_1
+      continue-on-error: true # Optional: Continue on errors and report them
+
+    - name: Upload Checkov Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: checkov-report
+        path: checkov_report.json
