@@ -26,7 +26,8 @@ jobs:
       run: |
         echo "Installing Trivy..."
         curl -sSfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/github-action/install.sh | sh
-        # Check if Trivy was installed successfully
+        echo "Adding Trivy to PATH..."
+        export PATH=$PATH:/home/runner/.local/bin
         trivy --version
 
     - name: Run Trivy IaC Scan
