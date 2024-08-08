@@ -25,9 +25,8 @@ jobs:
     - name: Install Trivy
       run: |
         echo "Installing Trivy..."
-        curl -sSfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/github-action/install.sh | sh
-        echo "Adding Trivy to PATH..."
-        export PATH=$PATH:/home/runner/.local/bin
+        wget https://github.com/aquasecurity/trivy/releases/download/v0.34.1/trivy_0.34.1_Linux-64bit.deb
+        sudo dpkg -i trivy_0.34.1_Linux-64bit.deb
         trivy --version
 
     - name: Run Trivy IaC Scan
