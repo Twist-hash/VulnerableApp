@@ -27,11 +27,27 @@ jobs:
         python -m pip install --upgrade pip
         pip install truffleHog
 
+    - name: Verify TruffleHog Installation
+      run: |
+        echo "Checking TruffleHog version..."
+        trufflehog --version
+
     - name: Run TruffleHog Scan
       run: |
-        trufflehog --json . > trufflehog_report.json
-        cat trufflehog_report.json
+        echo "Running TruffleHog scan..."
+        trufflehog --json . > trufflehog_report.json || { echo 'TruffleHog scan failed'; exit 1; }
 
+    - name: Display TruffleHog Report
+      run: |
+        echo "Displaying TruffleHog report..."
+        cat trufflehog_report.json || { echo 'Failed to display TruffleHog report'; exit 1; }
+
+    - name: Upload TruffleHog Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: trufflehog-report
+        path: trufflehog_report.json
+        
     - name: Upload TruffleHog Report
       uses: actions/upload-artifact@v3
       with:
