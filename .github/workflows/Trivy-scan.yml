@@ -24,7 +24,10 @@ jobs:
 
     - name: Install Trivy
       run: |
+        echo "Installing Trivy..."
         curl -sSfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/github-action/install.sh | sh
+        # Check if Trivy was installed successfully
+        trivy --version
 
     - name: Run Trivy IaC Scan
       run: |
